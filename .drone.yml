@@ -1,0 +1,30 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: plan
+    image: jmccann/drone-terraform:5
+    actions:
+      - validate
+      - plan
+    environment:
+      AWS_ACCESS_KEY_ID:
+        from_secret: aws_access_key_id
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: aws_secret_access_key
+      AWS_DEFAULT_REGION: "us-east-1"
+    when:
+      event:
+        - push
+      branch:
+        - master
+
+trigger:
+  event:
+    - push
