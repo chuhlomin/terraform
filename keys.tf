@@ -1,18 +1,3 @@
-resource "tls_private_key" "deployer" {
-  algorithm = "RSA"
-}
-resource "aws_key_pair" "generated_key" {
-  key_name   = "deployer"
-  public_key = "${tls_private_key.deployer.public_key_openssh}"
-  depends_on = [
-    tls_private_key.deployer
-  ]
-}
-resource "local_file" "key" {
-  content         = "${tls_private_key.deployer.private_key_pem}"
-  filename        = "deployer.pem"
-  file_permission = "0400"
-  depends_on = [
-    tls_private_key.deployer
-  ]
+resource "aws_key_pair" "deployer" {
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDWMmN/0v9ccceiexA/eAFCnqoezE7OnnDidtnxzl1Fu0K1801XC2155nY2h+Nyz4c+nrJvW9QYVXWTnmTA86aR+sgrHIrQl4Dkgvh/SNHwNEXMmyZAz0Oa/ZspD4yjjcPsvjITNpVTEpKlzz9lchtLgUZ9l8ugva2Br9La+3TevTRl+6zQlskBGAcuDSK/v8RYF99z2wSJIdeS429vlxIod0jiWl0wkd/czVFKY/MFlVKgNel4MwFQMw4Pr+QTZK1JlB+hsu1TDNse6OYw//mGu7GGJP9nINQRW3Xk7rmYBfwzhgg64XCF7a0YbqPzRoZl6BiDVCA1p6xAeVRl7KS7xkhpuKM7ZEQRm2Mf4z4OAj9qz+SQY+bXXJ8Etd+ab67HkbgDC83ekSWHutXLKH83c4E/DPHQEPZI9ChYxkAD5aJYfr6N3lix5ppw6EWP6uaPmgbme3g5MQfrdxkoBNS/m6Uqg/NaXOsafykKyUpcF9eyp+EcBdFI8iyL9dx+Sxc= chuhlomin@mbp-konstantin.fios-router.home"
 }

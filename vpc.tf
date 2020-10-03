@@ -12,7 +12,7 @@ resource "aws_security_group" "sg" {
   name = "ec2-sg"
 
   description = "EC2 security group (terraform-managed)"
-  vpc_id      = "${aws_vpc.vpc.id}"
+  vpc_id      = aws_vpc.vpc.id
 
   ingress {
     description = "SSH"
@@ -55,7 +55,7 @@ resource "aws_security_group" "sg" {
 }
 
 resource "aws_subnet" "public" {
-  vpc_id     = "${aws_vpc.vpc.id}"
+  vpc_id     = aws_vpc.vpc.id
   cidr_block = "192.168.0.0/24"
   #availability_zone = "ap-south-1a"
   map_public_ip_on_launch = "true"
@@ -65,7 +65,7 @@ resource "aws_subnet" "public" {
   }
 }
 resource "aws_subnet" "private" {
-  vpc_id     = "${aws_vpc.vpc.id}"
+  vpc_id     = aws_vpc.vpc.id
   cidr_block = "192.168.1.0/24"
   #  availability_zone = "ap-south-1b"
 
@@ -75,23 +75,23 @@ resource "aws_subnet" "private" {
 }
 
 resource "aws_internet_gateway" "internet_gateway" {
-  vpc_id = "${aws_vpc.vpc.id}"
+  vpc_id = aws_vpc.vpc.id
 }
 
 resource "aws_route_table" "rt" {
-  vpc_id = "${aws_vpc.vpc.id}"
+  vpc_id = aws_vpc.vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = "${aws_internet_gateway.internet_gateway.id}"
+    gateway_id = aws_internet_gateway.internet_gateway.id
   }
 }
 
 resource "aws_route_table_association" "a" {
-  subnet_id      = "${aws_subnet.public.id}"
-  route_table_id = "${aws_route_table.rt.id}"
+  subnet_id      = aws_subnet.public.id
+  route_table_id = aws_route_table.rt.id
 }
 resource "aws_route_table_association" "b" {
-  subnet_id      = "${aws_subnet.private.id}"
-  route_table_id = "${aws_route_table.rt.id}"
+  subnet_id      = aws_subnet.private.id
+  route_table_id = aws_route_table.rt.id
 }
